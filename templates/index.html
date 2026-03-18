@@ -10,5 +10,36 @@
 </header>
 <body>
 
+<table>
+    <thead>
+        <th>Baan</th>
+        <th>Naam</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+    </thead>
+    <tbody id="match-table-body">
+
+    </tbody>
+</table>
+
+<br><br>
+<script src="{{ url_for('static', filename='js/courts.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/matches.js') }}"></script>
+
+
+<div class="table-container">
+    <table id="matches">
+        <thead>
+            <tr>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</div>
 </body>
 </html>

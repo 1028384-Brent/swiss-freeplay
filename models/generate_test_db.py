@@ -84,3 +84,64 @@ def create_test_db(db_file):
     print('Database created.')
 
 create_test_db(db_file)
+
+
+def test_players(db_file):
+    print('Testing tournament.')
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM players")
+
+    players = []
+
+    #male players
+    for i in range(50):
+        name = f'male_player{i+1}'
+        level = (i % 10) + 1
+        gender = 1
+        players.append((name, level, gender))
+
+    #female players
+    for i in range(50):
+        name = f'female_player{i+1}'
+        level = (i % 10) + 1
+        gender = 2
+        players.append((name, level, gender))
+
+    cursor.executemany('''INSERT INTO players (name, level, gender) VALUES (?, ?, ?)''',
+                       players
+                    )
+
+    conn.commit()
+    conn.close()
+
+test_players(db_file)
+
+def test_courts(db_file):
+    print('Testing courts.')
+    conn = sqlite3.connect(db_file)
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM courts")
+
+    animal_courts = [
+        ("Lion Court", 1),
+        ("Tiger Court", 2),
+        ("Eagle Court", 3),
+        ("Shark Court", 4),
+        ("Panther Court", 5),
+        ("Wolf Court", 6),
+        ("Falcon Court", 7),
+        ("Bear Court", 8)
+    ]
+
+    cursor.executemany(
+        "INSERT INTO courts (name, number) VALUES (?, ?)",
+           animal_courts
+    )
+
+    conn.commit()
+    conn.close()
+    
+test_courts(db_file)

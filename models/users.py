@@ -1,5 +1,5 @@
 import hashlib
-from .db_utils import get_connection
+from models.db_utils import get_connection
 
 def check_login(username, password):
     hashed_input = hashlib.sha256(password.encode('utf-8')).hexdigest()

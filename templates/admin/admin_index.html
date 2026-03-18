@@ -6,5 +6,25 @@
 </head>
 <body>
 Hello Admin
+
+<button onclick="window.location.href='/logout'">Logout</button>
+
+<br><br>
+<div class="table-container">
+    <table id="matches">
+        <thead>
+            <tr>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Status</th>
+                <th>Plan</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin/admin_matches.js') }}"></script>
 </body>
 </html>
