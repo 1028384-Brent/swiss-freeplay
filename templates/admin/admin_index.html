@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_matches.css') }}">
 </head>
-<body>
-Hello Admin
+
+<header>
+    Hello Admin
 
 <button onclick="window.location.href='/logout'">Logout</button>
+</header>
+<body>
+
+
+<table>
+    <thead>
+        <th>Baan</th>
+        <th>Naam</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+    </thead>
+    <tbody id="court-table-body">
+
+    </tbody>
+</table>
+
+<br><br>
 
 <br><br>
 <div class="table-container">
@@ -25,6 +44,7 @@ Hello Admin
     </table>
 </div>
 
+<script src="{{ url_for('static', filename='js/courts.js')}}"></script>
 <script src="{{ url_for('static', filename='js/admin/admin_matches.js') }}"></script>
 </body>
 </html>

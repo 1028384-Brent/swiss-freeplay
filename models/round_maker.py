@@ -64,7 +64,7 @@ def create_matches():
         games.append((t1, t2))
 
     cursor.executemany("""
-    INSERT INTO games (team_id_1, team_id_2, status) 
+    INSERT INTO games (team_id_1, team_id_2, [status]) 
     VALUES (?, ?, 2)
     """, games)
 

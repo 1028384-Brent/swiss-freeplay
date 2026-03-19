@@ -18,18 +18,33 @@ def get_matches():
     """
 
     cursor.execute(query)
-    matches = cursor.fetchall()
+    matches = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT id, name FROM status")
+    status_list = [dict(row) for row in cursor.fetchall()]
 
     conn.close()
-    return matches
+    return matches, status_list
 
-def give_court():
+def give_court(game_id, court_id):
     conn = get_connection()
-    conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    query = """
-    INSERT INTO games(id, courts) VALUES (?, ?)
-    """
+    try:
+        check_query = "SELECT id FROM games WHERE court = ? AND [status] = 1"
+        cursor.execute(check_query, (court_id,))
+        existing_matches = cursor.fetchone()
 
-    cursor.execute(query, game_id, courts)
+        if existing_matches:
+            return {"status": "error", "message": f"Baan {court_id} is al bezet door game {existing_matches['id']}"}
+
+        update_query = "UPDATE games SET court = ? WHERE id = ?"
+        cursor.execute(update_query, (court_id, game_id))
+        conn.commit()
+        return {"status": "success", "message": f"Baan {court_id} is gegeven aan {game_id}"}
+
+    except Exception as e:
+        conn.rollback()
+        return {"status": "error", "message": str(e)}
+    finally:
+        conn.close()

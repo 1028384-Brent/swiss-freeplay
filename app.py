@@ -2,7 +2,8 @@ import flask
 from flask import render_template, request, url_for, jsonify
 from werkzeug.utils import redirect
 
-from models.matches import get_matches
+from models.matches import get_matches, give_court
+from models.courts import get_courts
 from models.users import check_login
 
 app = flask.Flask(__name__)
@@ -15,16 +16,16 @@ def index():
 @app.route('/api/matches')
 def matches():
 
-    raw_matches, raw_courts = get_matches()
+    matches_list, status_info = get_matches()
+    court_list = get_courts()
 
-    matches_list = [dict(row) for row in raw_matches]
-    court_list = [dict(row) for row in raw_courts]
+    courts_serializable = [dict(court) if not isinstance(court, dict) else court for court in court_list]
 
     return jsonify({
         "status": "success",
         "count": len(matches_list),
         "matches": matches_list,
-        "courts": court_list
+        "courts": courts_serializable,
     }), 200
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -34,7 +35,6 @@ def login():
         password = request.form['password']
 
         user_record = check_login(username, password)
-        print(f"DEBUG: user_record: {user_record}")
         if user_record:
             return redirect(url_for('admin.admin_index'))
         else:
@@ -50,7 +50,21 @@ def logout():
 def admin_index():
     return render_template('admin/admin_index.html')
 
+@admin.route('/api/assign_court', methods=['POST'])
+def assign_court():
+    data = request.json
+    result = give_court(data['game_id'], data['court_id'])
+
+    return jsonify(result)
+
 app.register_blueprint(admin, url_prefix='/admin')
+
+@admin.route('/api/score')
+def enter_score():
+    data = request.json
+    result = give_court(data['game_id'], data['court_id'])
+
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
