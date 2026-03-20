@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+</head>
+<nav>
+    <h1>Swiss Freeplay</h1>
+    <a href="{{ url_for('admin.admin_index')}}">Home</a>
+    <a href="{{ url_for('admin.admin_matches')}}">Matches</a>
+    <button onclick="window.location.href='/logout'">Logout</button>
+</nav>
+</html>

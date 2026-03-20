@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_matches.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courts.css') }}">
 </head>
-
-<header>
-    Hello Admin
-
-<button onclick="window.location.href='/logout'">Logout</button>
-</header>
 <body>
-
+{% include 'admin/admin_header.html' %}
 
 <table>
     <thead>
@@ -20,6 +15,7 @@
         <th>Naam</th>
         <th>Team 1</th>
         <th>Team 2</th>
+        <th>Enter Score</th>
     </thead>
     <tbody id="court-table-body">
 

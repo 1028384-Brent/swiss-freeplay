@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Swiss Freeplay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/courts.css') }}">
 </head>
-<header>
-    <h1>Swiss Freeplay</h1>
-    <a href="/login">Login</a>
-</header>
 <body>
+
+{% include 'header.html' %}
 
 <table>
     <thead>
@@ -16,6 +15,7 @@
         <th>Naam</th>
         <th>Team 1</th>
         <th>Team 2</th>
+        <th>Enter score</th>
     </thead>
     <tbody id="court-table-body">
 

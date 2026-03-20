@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetchMatches();
+    setInterval(fetchMatches, 10000);
+
 });
 
 function fetchMatches() {
@@ -36,9 +38,9 @@ function fetchMatches() {
 function getStatusLabel(statusCode) {
     // Mapping the integer status from your database to readable text
     const statuses = {
-        1: 'Completed',
+        1: 'In progress',
         2: 'Scheduled', // Based on your INSERT statement using status 2
-        3: 'In Progress'
+        3: 'Completed'
     };
     return statuses[statusCode] || 'Unknown';
 }

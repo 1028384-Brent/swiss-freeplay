@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetchMatches();
+    setInterval(fetchMatches, 10000);
 });
 
 function fetchMatches() {
@@ -41,7 +42,7 @@ function fetchMatches() {
                           <td>Player ${match.t1_p1} & Player ${match.t1_p2}</td>
                           <td>Player ${match.t2_p1} & Player ${match.t2_p2}</td>
                           <td>${getStatusLabel(match.status)}</td>
-                          <td>${buttonsHtml}</td
+                          <td>${buttonsHtml}</td>
                     `;
                     tableBody.appendChild(tr);
                 });
@@ -56,9 +57,9 @@ function fetchMatches() {
 
 function getStatusLabel(statusCode) {
     const statuses = {
-        1: 'Completed',
-        2: 'Scheduled',
-        3: 'In Progress'
+        1: 'Playing',
+        2: 'Planned',
+        3: 'Finnished'
     };
     return statuses[statusCode] || 'Unknown';
 }
