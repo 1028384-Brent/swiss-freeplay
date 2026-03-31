@@ -27,19 +27,44 @@ def get_matches():
     conn.close()
     return matches, status_list
 
+
 def get_finished_matches():
     conn = get_connection()
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
+    # Using LEFT JOIN ensures matches show up even if a player/court is missing
     query = """ 
-    SELECT * FROM games WHERE status = 3"""
-    cursor.execute(query)
-    finnished_matches = cursor.fetchall()
+    SELECT 
+        g.id,
+        g.score_team_1,
+        g.score_team_2,
+        g.status,
+        c.name AS court_name,
+        p1.name AS t1_p1, 
+        p2.name AS t1_p2,
+        p3.name AS t2_p1, 
+        p4.name AS t2_p2
+    FROM games g 
+    LEFT JOIN courts c ON g.court = c.id
+    LEFT JOIN teams t1 ON g.team_id_1 = t1.id
+    LEFT JOIN teams t2 ON g.team_id_2 = t2.id
+    LEFT JOIN players p1 ON t1.player_id_1 = p1.id
+    LEFT JOIN players p2 ON t1.player_id_2 = p2.id
+    LEFT JOIN players p3 ON t2.player_id_1 = p3.id
+    LEFT JOIN players p4 ON t2.player_id_2 = p4.id
+    WHERE g.status = 3
+    """
 
-    conn.close()
-    return finnished_matches
-
+    try:
+        cursor.execute(query)
+        finished_matches = cursor.fetchall()
+        return finished_matches
+    except Exception as e:
+        print(f"SQL Error: {e}")  # This will show up in your terminal!
+        raise e
+    finally:
+        conn.close()
 
 def give_court(game_id, court_id):
     conn = get_connection()
@@ -64,7 +89,7 @@ def give_court(game_id, court_id):
     finally:
         conn.close()
 
-def finnish_game(game_id, score_t1, score_t2):
+def finish_game(game_id, score_t1, score_t2):
     conn = get_connection()
     cursor = conn.cursor()
     try:

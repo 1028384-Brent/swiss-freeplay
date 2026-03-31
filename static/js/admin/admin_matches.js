@@ -59,7 +59,7 @@ function getStatusLabel(statusCode) {
     const statuses = {
         1: 'Playing',
         2: 'Planned',
-        3: 'Finnished'
+        3: 'Finished'
     };
     return statuses[statusCode] || 'Unknown';
 }

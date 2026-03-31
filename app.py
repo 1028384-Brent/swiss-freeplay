@@ -2,9 +2,10 @@ import flask
 from flask import render_template, request, url_for, jsonify
 from werkzeug.utils import redirect
 
-from models.matches import get_matches, give_court, finnish_game
+from models.matches import get_matches, give_court, finish_game, get_finished_matches
 from models.courts import get_courts
 from models.users import check_login
+from models.players import get_players, post_players
 
 app = flask.Flask(__name__)
 admin = flask.Blueprint('admin', __name__)
@@ -53,9 +54,8 @@ def enter_score():
     if not game_id:
         return jsonify({"status": "error", "message": "Game ID is required"}), 400
 
-    result = finnish_game(game_id, score_t1, score_t2)
+    result = finish_game(game_id, score_t1, score_t2)
     return jsonify(result)
-
 
 @app.route('/logout')
 def logout():
@@ -69,9 +69,32 @@ def admin_index():
 def admin_matches():
     return render_template('admin/admin_matches.html')
 
+@admin.route('/api/finished_matches')
+def finished_matches_api():
+    try:
+        matches_rows = get_finished_matches()
+
+        matches_list = []
+        for row in matches_rows:
+            matches_list.append(dict(row))
+
+        return jsonify({
+            "status": "success",
+            "matches": matches_list
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
 @admin.route('/players')
 def admin_players():
     return render_template('admin/admin_players.html')
+
+@admin.route('/api/players')
+def admin_players_api():
+    players = get_players()
 
 @admin.route('/api/assign_court', methods=['POST'])
 def assign_court():
